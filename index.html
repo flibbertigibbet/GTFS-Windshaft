@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>SEPTA Map</title>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+  <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.4"></script>
+  <script src='http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js'></script>
+  <link href='http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css' rel='stylesheet' />
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <style>
+    body { margin:0; padding:0; }
+    #map { position:absolute; top:0; bottom:0; width:100%; }
+    ul.scroll-menu {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        -moz-overflow-scrolling: touch;
+        -ms-overflow-scrolling: touch;
+        -o-overflow-scrolling: touch;
+        overflow-scrolling: touch;
+        width:175px;
+        height: auto;
+        max-height: 400px;
+    }
+    #layers { position:relative; float:right; top:15px; right:15px; font-size:12px; 
+              z-index:999; font-weight:bold; }
+    .Stops { background-color:#256baf; }
+    .Routes { background-color:#dfdeb6; }
+  </style>
+</head>
+<body>
+<div class="btn-group btn-group-lg pull-right">
+  <div id="layers" class="dropdown pull-right">
+    <button class="btn btn-default dropdown-toggle" type="button" 
+      id="dropdownMenu" data-toggle="dropdown">Layers <span class="caret"></span>
+    </button>
+    <ul id='map-ui' class="scroll-menu list-group dropdown-menu nav nav-pills nav-stacked" role="menu" aria-labelledby="dropdownMenu">
+    </ul>
+  </div>
+</div>
+<div id='map'></div>
+<script>
+var ui = document.getElementById('map-ui');
+var map = L.map('map', {
+  tileLayer: {
+        detectRetina: true
+    }
+}).setView([39.952451,-75.163664], 13);
+
+L.control.layers.autoZIndex = true;
+
+addLayer(L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}.png', { attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, under <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>. Data by <a href="http://openstreetmap.org">OpenStreetMap</a>, under <a href="http://creativecommons.org/licenses/by-sa/3.0">CC BY SA</a>.' }), null, 'Base Map', 1, null);
+
+addLayer(L.tileLayer('http://localhost:4000/tiles/septa_rail/route_info/all/all/{z}/{x}/{y}.png', 
+    {attribution:'SEPTA'}), 
+    L.mapbox.gridLayer('http://localhost:4000/tiles/septa_rail/route_info/all/all.json'),
+    'Rail Routes', null);
+
+addLayer(L.tileLayer('http://localhost:4000/tiles/septa_rail/stop_info/all/all/{z}/{x}/{y}.png', 
+    {attribution:'SEPTA'}), 
+    L.mapbox.gridLayer('http://localhost:4000/tiles/septa_rail/stop_info/all/all.json'),
+    'Rail Stops', null);
+
+addLayer(L.tileLayer('http://localhost:4000/tiles/septa_bus/route_info/all/all/{z}/{x}/{y}.png', 
+    {attribution:'SEPTA'}), 
+    L.mapbox.gridLayer('http://localhost:4000/tiles/septa_bus/route_info/all/all.json'),
+    'Bus Routes', null);
+
+addLayer(L.tileLayer('http://localhost:4000/tiles/septa_bus/stop_info/all/all/{z}/{x}/{y}.png', 
+    {attribution:'SEPTA'}), 
+    L.mapbox.gridLayer('http://localhost:4000/tiles/septa_bus/stop_info/all/all.json'),
+    'Bus Stops', null);
+
+function addLayer(layer, infoLayer, name, zIndex, color) {
+    var gridControl = null;
+    layer.addTo(map);
+    if (zIndex == 1) {
+        layer.bringToBack(); // keep base layer at bottom
+    }
+        
+    if (infoLayer) {
+      infoLayer
+        .addTo(map);
+        gridControl = L.mapbox.gridControl(infoLayer, {follow: true}).addTo(map);
+    }
+
+    // Create a simple layer switcher that toggles layers on
+    // and off.
+    var item = document.createElement('li');
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = 'active pull-right nav-justified';
+    link.innerHTML = '<span class="badge pull-left approved ' + name + 
+        '"><span class="glyphicon glyphicon-ok"></span></span><span class="pull-right">' + 
+        name + '</span>';
+
+    item.setAttribute('role', 'presentation');
+    item.className = 'nav-justified';
+    link.setAttribute('role', 'menuitem');
+    link.tabindex = '-1';
+
+    link.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (map.hasLayer(layer)) {
+            map.removeLayer(layer);
+            if (infoLayer) {
+              map.removeLayer(infoLayer);
+              gridControl.hide(); // hide any tooltip currently showing
+              map.removeControl(gridControl);
+            }
+            this.className = 'pull-right layeritem nav-justified';
+            this.innerHTML = '<span class="pull-right">' + name + '</span>';
+        } else {
+            map.addLayer(layer);
+            if (infoLayer) {
+              map.addLayer(infoLayer);
+              map.addControl(gridControl);
+            }
+            this.className = 'active pull-right layeritem nav-justified';
+            this.innerHTML = '<span class="badge pull-left approved ' + name + 
+                '"><span class="glyphicon glyphicon-ok"></span></span><span class="pull-right">' + 
+                name + '</span>';
+            
+        }
+    };
+
+    item.appendChild(link);
+    ui.appendChild(item);
+}
+$('ul.scroll-menu').css('max-height', $(window).height() - 120);
+</script>
+</body>
+</html>
