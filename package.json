@@ -1,0 +1,22 @@
+{
+  "name": "gtfs-windshaft",
+  "version": "0.0.1",
+  "description": "Map PostGIS databases of GTFS data using Windshaft and Leaflet",
+  "main": "septa.js",
+  "dependencies": {
+    "windshaft": "^0.36.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flibbertigibbet/GTFS-Windshaft.git"
+  },
+  "author": "Kathryn Killebrew",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/flibbertigibbet/GTFS-Windshaft/issues"
+  }
+}
