@@ -4,13 +4,14 @@
 <meta charset=utf-8 />
 <title>SEPTA Map</title>
   <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
-  <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.2.4"></script>
-  <script src='http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js'></script>
-  <link href='http://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css' rel='stylesheet' />
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
+  <script src='http://api.tiles.mapbox.com/mapbox.js/v2.4.0/mapbox.js'></script>
+  <link href='http://api.tiles.mapbox.com/mapbox.js/v2.4.0/mapbox.css' rel='stylesheet' />
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="js/tile.json"></script>
   <style>
     body { margin:0; padding:0; }
     #map { position:absolute; top:0; bottom:0; width:100%; }
@@ -56,23 +57,25 @@ addLayer(L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{
 
 addLayer(L.tileLayer('http://localhost:4000/tiles/septa_rail/route_info/all/all/{z}/{x}/{y}.png', 
     {attribution:'SEPTA'}), 
-    L.mapbox.gridLayer('http://localhost:4000/tiles/septa_rail/route_info/all/all.json'),
+    L.mapbox.gridLayer(railRouteTileJson),
     'Rail Routes', null);
 
 addLayer(L.tileLayer('http://localhost:4000/tiles/septa_rail/stop_info/all/all/{z}/{x}/{y}.png', 
     {attribution:'SEPTA'}), 
-    L.mapbox.gridLayer('http://localhost:4000/tiles/septa_rail/stop_info/all/all.json'),
+    L.mapbox.gridLayer(railStopTileJson),
     'Rail Stops', null);
 
+/*
 addLayer(L.tileLayer('http://localhost:4000/tiles/septa_bus/route_info/all/all/{z}/{x}/{y}.png', 
     {attribution:'SEPTA'}), 
-    L.mapbox.gridLayer('http://localhost:4000/tiles/septa_bus/route_info/all/all.json'),
+    L.mapbox.gridLayer('http://localhost:4000/tiles/septa_bus/route_info/all/all/{z}/{x}/{y}.grid.json'),
     'Bus Routes', null);
 
 addLayer(L.tileLayer('http://localhost:4000/tiles/septa_bus/stop_info/all/all/{z}/{x}/{y}.png', 
     {attribution:'SEPTA'}), 
-    L.mapbox.gridLayer('http://localhost:4000/tiles/septa_bus/stop_info/all/all.json'),
+    L.mapbox.gridLayer('http://localhost:4000/tiles/septa_bus/stop_info/all/all/{z}/{x}/{y}.grid.json'),
     'Bus Stops', null);
+*/
 
 function addLayer(layer, infoLayer, name, zIndex, color) {
     var gridControl = null;
