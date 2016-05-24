@@ -1,29 +1,38 @@
 // Windshaft tile server configuration
 
-var Windshaft = require('./lib/windshaft');
+var Windshaft = require('windshaft');
 var _         = require('underscore');
+
+var dbUser = process.env.DB_USER || 'postgres',
+    dbPass = process.env.DB_PASSWORD || 'postgres',
+    dbHost = process.env.DB_HOST || 'localhost',
+    dbName = process.env.DB_NAME || 'gtfs',
+    dbPort = process.env.DB_PORT || 5432,
+    redisHost = process.env.REDIS_HOST || 'localhost',
+    redisPort = process.env.REDIS_PORT || 6379;
+
 var config = {
     base_url: '/tiles/:dbname/:table/:route_type/:route_ids',
     base_url_notable: '/tiles',
     grainstore: {
                  datasource: {
-                     user:'DB_USERNAME',
-                     password:'DB_USER_PASSWORD',
-                     host: '127.0.0.1',
-                     port: 5432,
+                     user: dbUser,
+                     password: dbPass,
+                     host: dbHost,
+                     port: dbPort,
                      geometry_field: 'geom',
                      srid: 4326
                  }
     }, //see grainstore npm for other options
-    redis: {host: '127.0.0.1', port: 6379},
-    //enable_cors: true,
+    redis: {host: '127.0.0.1', port: redisPort},
+    enable_cors: true,
     req2params: function(req, callback) {
 
         // specify the column you'd like to interact with
         if (req.params.table === 'route_info') {
-          req.params.interactivity = 'route_short_name';
+          req.params.interactivity = 'route_short_name,route_id';
     	} else if (req.params.table === 'stop_info') {
-    		req.params.interactivity = 'routes';
+    		req.params.interactivity = 'routes,stop_name';
     	}
         
         var style = '#route_info { ' +
