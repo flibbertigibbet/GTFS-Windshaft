@@ -61,6 +61,6 @@ Serving
  And should be renamed to match your database(s). The project example is for two feeds/databases.
  If the JSON variables are renamed, `index.html` will need to be updated where the layers are defined.
 
- - The index page is fully static and may be loaded in the browser without a server process to host it.
+- The index page is fully static and may be loaded in the browser without a server process to host it.
 
 :bus: :trolleybus: :mountain_cableway: :railway_car: :bus: :aerial_tramway:
