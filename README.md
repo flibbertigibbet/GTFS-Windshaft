@@ -3,10 +3,12 @@ GTFS-Windshaft
 
 Map PostGIS databases of GTFS data using Windshaft and Leaflet
 
+:bus: :trolleybus: :mountain_cableway: :railway_car: :bus: :aerial_tramway:
+
 Install
 =======
 
-Install Windshaft with `npm install`. Note this will require using node < 0.11.
+Install the Windshaft dependency with `npm install`. Note this will require using node < 0.11, and that Windshaft requires redis.
 
 
 Setup Database
@@ -43,3 +45,22 @@ Use the scripts in the [GTFS SQL importer](https://github.com/flibbertigibbet/gt
   ```bash
   psql -d DB_NAME -f gtfs_SQL_importer/src/tiler_tables.sql
   ```
+
+Serving
+=======
+
+- Set the `DB_USER` and `DB_PASSWORD` environment variables, whcih are read in the head of `server.js`.
+  If serving outside of localhost, set up a database user with read-only permissions on just the GTFS database(s).
+
+- Start the tiler with `node server.js`.
+
+- To use the web page in the project, edit the [TileJSON](https://github.com/mapbox/tilejson-spec/tree/master/2.1.0) in `js/tile.json` to reference your feed. Note that the URLs for the tiler are of the form:
+ ```
+ http://localhost:4000/tiles/DATABASE_NAME/.../{z}/{x}/{y}.png
+ ```
+ And should be renamed to match your database(s). The project example is for two feeds/databases.
+ If the JSON variables are renamed, `index.html` will need to be updated where the layers are defined.
+
+ - The index page is fully static and may be loaded in the browser without a server process to host it.
+
+:bus: :trolleybus: :mountain_cableway: :railway_car: :bus: :aerial_tramway:

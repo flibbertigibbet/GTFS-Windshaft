@@ -32,7 +32,6 @@ var config = {
         if (req.params.table === 'route_info') {
           req.params.interactivity = 'route_short_name,route_id';
     	} else if (req.params.table === 'stop_info') {
-            console.log('setting interactivity for stop info');
     		req.params.interactivity = 'routes,stop_name';
     	}
         
