@@ -33,3 +33,39 @@ var railStopTileJson = {
 
     "template": "{{#__teaser__}}<h3>{{ stop_name }} serves:</h3>{{ routes }}{{/__teaser__}}",
 };
+
+var busRouteTileJson = {
+    "tilejson": "2.1.0",
+    "name": "SEPTA",
+    "description": "SEPTA transit routes around Philadelphia.",
+    "version": "0.0.1",
+    "attribution": "SEPTA",
+    "minzoom": 0,
+    "maxzoom": 22,
+    "center": [ -75.163425, 39.953334, 8 ],
+    "legend": "SEPTA transit routes",
+    "scheme": "xyz",
+
+    "tiles": ["http://localhost:4000/tiles/septa_bus/route_info/all/all/{z}/{x}/{y}.png"],
+    "grids": ["http://localhost:4000/tiles/septa_bus/route_info/all/all/{z}/{x}/{y}.grid.json"],
+
+    "template": "{{#__teaser__}}<h3>Route: {{ route_id }}</h3>{{ route_short_name }}{{/__teaser__}}",
+};
+
+var busStopTileJson = {
+    "tilejson": "2.1.0",
+    "name": "SEPTA",
+    "description": "SEPTA transit routes around Philadelphia.",
+    "version": "0.0.1",
+    "attribution": "SEPTA",
+    "minzoom": 0,
+    "maxzoom": 22,
+    "center": [ -75.163425, 39.953334, 8 ],
+    "legend": "SEPTA transit routes",
+    "scheme": "xyz",
+
+    "tiles": ["http://localhost:4000/tiles/septa_bus/stop_info/all/all/{z}/{x}/{y}.png"],
+    "grids": ["http://localhost:4000/tiles/septa_bus/stop_info/all/all/{z}/{x}/{y}.grid.json"],
+
+    "template": "{{#__teaser__}}<h3>{{ stop_name }} serves:</h3>{{ routes }}{{/__teaser__}}",
+};

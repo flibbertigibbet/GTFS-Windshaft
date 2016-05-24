@@ -65,17 +65,15 @@ addLayer(L.tileLayer('http://localhost:4000/tiles/septa_rail/stop_info/all/all/{
     L.mapbox.gridLayer(railStopTileJson),
     'Rail Stops', null);
 
-/*
 addLayer(L.tileLayer('http://localhost:4000/tiles/septa_bus/route_info/all/all/{z}/{x}/{y}.png', 
     {attribution:'SEPTA'}), 
-    L.mapbox.gridLayer('http://localhost:4000/tiles/septa_bus/route_info/all/all/{z}/{x}/{y}.grid.json'),
+    L.mapbox.gridLayer(busRouteTileJson),
     'Bus Routes', null);
 
 addLayer(L.tileLayer('http://localhost:4000/tiles/septa_bus/stop_info/all/all/{z}/{x}/{y}.png', 
     {attribution:'SEPTA'}), 
-    L.mapbox.gridLayer('http://localhost:4000/tiles/septa_bus/stop_info/all/all/{z}/{x}/{y}.grid.json'),
+    L.mapbox.gridLayer(busStopTileJson),
     'Bus Stops', null);
-*/
 
 function addLayer(layer, infoLayer, name, zIndex, color) {
     var gridControl = null;
